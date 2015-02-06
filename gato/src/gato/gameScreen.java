@@ -202,19 +202,19 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
         
         
       //examina si un jugador a ganado
-            String lineaV1, lineaV2, lineaV3, lineaH1, lineaH2, lineaH3;
+            int lineaV1, lineaV2, lineaV3, lineaH1, lineaH2, lineaH3;
             //recuperar valores
-            String btn00 = botones[0][0].getText();
-            String btn01 = botones[0][1].getText();
-            String btn02 = botones[0][2].getText();
+            int btn00 = botones[0][0].tipo;
+            int btn01 = botones[0][1].tipo;
+            int btn02 = botones[0][2].tipo;
             
-            String btn10 = botones[1][0].getText();
-            String btn11 = botones[1][1].getText();
-            String btn12 = botones[1][2].getText();
+            int btn10 = botones[1][0].tipo;
+            int btn11 = botones[1][1].tipo;
+            int btn12 = botones[1][2].tipo;
             
-            String btn20 = botones[2][0].getText();
-            String btn21 = botones[2][1].getText();
-            String btn22 = botones[2][2].getText();
+            int btn20 = botones[2][0].tipo;
+            int btn21 = botones[2][1].tipo;
+            int btn22 = botones[2][2].tipo;
             
            
              lineaV1=btn00+btn01+btn02;
@@ -229,7 +229,7 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
             System.out.println("*"+lineaH2+"*");
             System.out.println("*"+lineaH3+"*");
         //Horizontales!   
-        if(lineaH1.equals("   ")){
+        if(lineaH1.equals("3")){
             lWin.setText("1 "+player1+" WIN!");
             pnlBotones.setEnabled(false);
             ganador=false;
