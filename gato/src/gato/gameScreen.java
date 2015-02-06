@@ -15,14 +15,12 @@ import javax.swing.JOptionPane;
  *
  * @author HbTO
  */
-public class gameScreen extends javax.swing.JFrame implements ActionListener, Runnable {
-    JButton botones [][];
+public class gameScreen extends javax.swing.JFrame implements ActionListener {
+    MiBoton botones [][];
     
     String player1="", player2="";
     int filaBtn, columnaBtn;
-    boolean ganador=true;
-    Thread verificar;
-    
+    boolean ganador=false;
     
     
     
@@ -34,11 +32,11 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener, Ru
 
     
     public void llenarPanel(){
-        botones = new JButton[3][3];
+        botones = new MiBoton[3][3];
         
         for(int i=0; i<botones.length; i++){
             for(int j=0; j<botones.length; j++){
-                botones[i][j]= new JButton();
+                botones[i][j]= new MiBoton();
                botones[i][j].setBounds(j*(400/3), i*(400/3), 400/3, 400/3);
               // botones[i][j].setContentAreaFilled(false);
                botones[i][j].setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -48,8 +46,7 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener, Ru
         }
         pnlBotones.repaint();
         
-        verificar = new Thread(this);
-        verificar.start();
+        
     }
     
     
@@ -151,6 +148,7 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener, Ru
             lWin.repaint();
             pnlBotones.removeAll();
             llenarPanel();
+            ganador=true;
             }else{
                 
                 //No hacemos nada continuamos :D
@@ -199,12 +197,12 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener, Ru
     private javax.swing.JPanel pnlBotones;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public void run() {
+    
+    public void verificar() {
         
         
       //examina si un jugador a ganado
-        while(ganador==true){
+            String lineaV1, lineaV2, lineaV3, lineaH1, lineaH2, lineaH3;
             //recuperar valores
             String btn00 = botones[0][0].getText();
             String btn01 = botones[0][1].getText();
@@ -219,10 +217,50 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener, Ru
             String btn22 = botones[2][2].getText();
             
            
-            String lineaV1=btn00+btn01+btn02;
-            String lineaV2=btn10+btn11+btn12;
-            String lineaV3=btn20+btn21+btn22;
+             lineaV1=btn00+btn01+btn02;
+            lineaV2=btn10+btn11+btn12;
+            lineaV3=btn20+btn21+btn22;
             
+            lineaH1=btn00+btn10+btn20;
+            lineaH2=btn01+btn11+btn21;
+            lineaH3=btn02+btn12+btn22;
+            
+            System.out.println("*"+lineaH1+"*");
+            System.out.println("*"+lineaH2+"*");
+            System.out.println("*"+lineaH3+"*");
+        //Horizontales!   
+        if(lineaH1.equals("   ")){
+            lWin.setText("1 "+player1+" WIN!");
+            pnlBotones.setEnabled(false);
+            ganador=false;
+        }
+        
+        if(lineaH1.equals("      ")){
+            lWin.setText(" 1"+player2+" WIN!");
+            ganador=false;
+        }
+        
+        if(lineaH2.equals("   ")){
+            lWin.setText("2 "+player1+" WIN!");
+            ganador=false;
+        }
+        
+        if(lineaH2.equals("      ")){
+            lWin.setText(" 2"+player2+" WIN!");
+            ganador=false;
+        }
+        if(lineaH3.equals("   ")){
+            lWin.setText(" 3"+player1+" WIN!");
+            ganador=false;
+        }
+        
+        if(lineaH3.equals("      ")){
+            lWin.setText("3 "+player2+" WIN!");
+            ganador=false;
+        }
+        
+        
+        //Verticales!   
         if(lineaV1.equals("   ")){
             lWin.setText(" "+player1+" WIN!");
             pnlBotones.setEnabled(false);
@@ -253,17 +291,14 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener, Ru
             ganador=false;
         }
         
-    }
-        
-        
-        
+     
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
        
         String contenido, playerTurn = lTurn.getText();
-        JButton botones = (JButton)e.getSource();
+        MiBoton botones = (MiBoton)e.getSource();
         contenido = botones.getText();
         
         for(int i =0; i<this.botones.length; i++){
@@ -282,8 +317,9 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener, Ru
             //System.out.println("aqui"+player1);
             if(contenido.equals("")){
                botones.setIcon(new ImageIcon(getClass().getResource("../images/player1.png")));
-               botones.setText(" ");
-                lTurn.setText(player2);
+               botones.tipo=1;
+               verificar();
+               lTurn.setText(player2);
             }
         }
         
@@ -293,7 +329,7 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener, Ru
             //System.out.println("aqui"+player2);
             if(contenido.equals("")){
                 botones.setIcon(new ImageIcon(getClass().getResource("../images/player2.png")));
-                botones.setText("  ");
+                botones.tipo=2;
                 lTurn.setText(player1);
             }
         }
