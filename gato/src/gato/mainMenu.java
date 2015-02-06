@@ -1,6 +1,7 @@
 package gato;
 
 import java.util.Random;
+import javax.swing.JOptionPane;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -57,6 +58,11 @@ public class mainMenu extends javax.swing.JFrame {
         txtPlayer2.setText("Player2");
 
         jButton1.setText("Exit");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         btnNormal.setText("Normal");
         btnNormal.addActionListener(new java.awt.event.ActionListener() {
@@ -129,6 +135,7 @@ public class mainMenu extends javax.swing.JFrame {
         
         obj.player1=txtPlayer1.getText();
         obj.player2=txtPlayer2.getText();
+        
         obj.lTurn.setText(txtPlayer1.getText());
         obj.llenarPanel();
         this.setVisible(false);
@@ -145,15 +152,24 @@ public class mainMenu extends javax.swing.JFrame {
        
             if(empieza==0){
                 obj.lTurn.setText(txtPlayer1.getText());
+                
             }else{
                 obj.lTurn.setText(txtPlayer2.getText());
+                
             }
-
-            this.setVisible(false);
-            obj.llenarPanel();
-            obj.setVisible(true);
+                obj.player1 = txtPlayer1.getText();
+                obj.player2 = txtPlayer2.getText();
+                
+                this.setVisible(false);
+                obj.llenarPanel();
+                obj.setVisible(true);
        
     }//GEN-LAST:event_btnRandomActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        JOptionPane.showMessageDialog(null,"Come back soon!!","Good Bye!", JOptionPane.ERROR_MESSAGE);
+        System.exit(0);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

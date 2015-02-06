@@ -5,21 +5,30 @@
  */
 package gato;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author HbTO
  */
-public class gameScreen extends javax.swing.JFrame {
+public class gameScreen extends javax.swing.JFrame implements ActionListener, Runnable {
     JButton botones [][];
     
-    String player1, player2;
-    /**
-     * Creates new form gameScreen
-     */
+    String player1="", player2="";
+    int filaBtn, columnaBtn;
+    boolean ganador=true;
+    Thread verificar;
+    
+    
+    
+    
     public gameScreen() {
         initComponents();
+        setLocationRelativeTo(null);
         
     }
 
@@ -31,22 +40,20 @@ public class gameScreen extends javax.swing.JFrame {
             for(int j=0; j<botones.length; j++){
                 botones[i][j]= new JButton();
                botones[i][j].setBounds(j*(400/3), i*(400/3), 400/3, 400/3);
-               botones[i][j].setContentAreaFilled(false);
+              // botones[i][j].setContentAreaFilled(false);
                botones[i][j].setBorder(javax.swing.BorderFactory.createEtchedBorder());
+                botones[i][j].addActionListener(this);
                 pnlBotones.add(botones[i][j]);
             }
         }
         pnlBotones.repaint();
+        
+        verificar = new Thread(this);
+        verificar.start();
     }
     
     
-    public String turnoPlayer(){
-       
-        String turno;
-        turno = lTurn.getText();
-       
-        return(turno);
-    }
+    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -60,7 +67,11 @@ public class gameScreen extends javax.swing.JFrame {
         pnlBotones = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         lTurn = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnReset = new javax.swing.JButton();
+        lWin = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        backMenu = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -68,12 +79,28 @@ public class gameScreen extends javax.swing.JFrame {
 
         jLabel1.setText("Turn:");
 
-        jButton1.setText("Start");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnReset.setText("Reset");
+        btnReset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnResetActionPerformed(evt);
             }
         });
+
+        lWin.setFont(new java.awt.Font("Comic Sans MS", 1, 24)); // NOI18N
+        lWin.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        backMenu.setText("Back <-");
+        backMenu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                backMenuMouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(backMenu);
+
+        jMenu2.setText("About");
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -82,16 +109,17 @@ public class gameScreen extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(116, 116, 116)
-                        .addComponent(pnlBotones, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(29, 29, 29)
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
                         .addComponent(lTurn, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(32, 32, 32)
-                        .addComponent(jButton1)))
-                .addContainerGap(82, Short.MAX_VALUE))
+                        .addComponent(btnReset))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(100, 100, 100)
+                        .addComponent(pnlBotones, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(100, Short.MAX_VALUE))
+            .addComponent(lWin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -104,18 +132,46 @@ public class gameScreen extends javax.swing.JFrame {
                             .addComponent(lTurn, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jButton1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                        .addComponent(btnReset)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlBotones, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(71, 71, 71))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+                .addComponent(lWin, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        int reset = JOptionPane.showConfirmDialog(null,"Are you sure?.\nThe progress will be lost.","¿Do you want to reset the game?", JOptionPane.YES_NO_OPTION);
+    
+            if(reset==0){
+            lWin.setText("");
+            lWin.repaint();
+            pnlBotones.removeAll();
+            llenarPanel();
+            }else{
+                
+                //No hacemos nada continuamos :D
+            } 
         
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnResetActionPerformed
+
+    private void backMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backMenuMouseClicked
+        int salir = JOptionPane.showConfirmDialog(null,"Are you sure?.\nThe progress will be lost.","¿Do you want to leave?", JOptionPane.YES_NO_OPTION);
+    
+            if(salir==0){
+             // Upps se quiere ir...
+                
+                mainMenu obj = new mainMenu();
+                obj.setVisible(true);
+                setVisible(false);
+            }else{
+               
+                //No hacemos nada continuamos :D
+            } 
+    }//GEN-LAST:event_backMenuMouseClicked
 
     /**
      * @param args the command line arguments
@@ -133,9 +189,115 @@ public class gameScreen extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JMenu backMenu;
+    private javax.swing.JButton btnReset;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
     public static javax.swing.JLabel lTurn;
+    private javax.swing.JLabel lWin;
     private javax.swing.JPanel pnlBotones;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void run() {
+        
+        
+      //examina si un jugador a ganado
+        while(ganador==true){
+            //recuperar valores
+            String btn00 = botones[0][0].getText();
+            String btn01 = botones[0][1].getText();
+            String btn02 = botones[0][2].getText();
+            
+            String btn10 = botones[1][0].getText();
+            String btn11 = botones[1][1].getText();
+            String btn12 = botones[1][2].getText();
+            
+            String btn20 = botones[2][0].getText();
+            String btn21 = botones[2][1].getText();
+            String btn22 = botones[2][2].getText();
+            
+           
+            String lineaV1=btn00+btn01+btn02;
+            String lineaV2=btn10+btn11+btn12;
+            String lineaV3=btn20+btn21+btn22;
+            
+        if(lineaV1.equals("   ")){
+            lWin.setText(" "+player1+" WIN!");
+            pnlBotones.setEnabled(false);
+            ganador=false;
+        }
+        
+        if(lineaV1.equals("      ")){
+            lWin.setText(" "+player2+" WIN!");
+            ganador=false;
+        }
+        
+        if(lineaV2.equals("   ")){
+            lWin.setText(" "+player1+" WIN!");
+            ganador=false;
+        }
+        
+        if(lineaV2.equals("      ")){
+            lWin.setText(" "+player2+" WIN!");
+            ganador=false;
+        }
+        if(lineaV3.equals("   ")){
+            lWin.setText(" "+player1+" WIN!");
+            ganador=false;
+        }
+        
+        if(lineaV3.equals("      ")){
+            lWin.setText(" "+player2+" WIN!");
+            ganador=false;
+        }
+        
+    }
+        
+        
+        
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+       
+        String contenido, playerTurn = lTurn.getText();
+        JButton botones = (JButton)e.getSource();
+        contenido = botones.getText();
+        
+        for(int i =0; i<this.botones.length; i++){
+            for(int j=0; j<this.botones.length; j++){
+                if(botones == this.botones[i][j]){
+                    filaBtn=i;
+                    columnaBtn=j;
+                    System.out.println(i+"=="+j);
+                }
+            }
+        }
+        
+        
+        //verifica si es player1
+        if(playerTurn.equals(player1)){
+            //System.out.println("aqui"+player1);
+            if(contenido.equals("")){
+               botones.setIcon(new ImageIcon(getClass().getResource("../images/player1.png")));
+               botones.setText(" ");
+                lTurn.setText(player2);
+            }
+        }
+        
+        
+        //Verifica si es palyer2
+        if(playerTurn.equals(player2)){
+            //System.out.println("aqui"+player2);
+            if(contenido.equals("")){
+                botones.setIcon(new ImageIcon(getClass().getResource("../images/player2.png")));
+                botones.setText("  ");
+                lTurn.setText(player1);
+            }
+        }
+        
+    }
+    
 }
