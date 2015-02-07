@@ -28,10 +28,10 @@
               <Component id="jLabel1" min="-2" pref="434" max="-2" attributes="0"/>
           </Group>
           <Group type="102" attributes="0">
-              <EmptySpace min="106" pref="106" max="-2" attributes="0"/>
-              <Component id="btnNormal" min="-2" pref="71" max="-2" attributes="0"/>
-              <EmptySpace min="73" pref="73" max="-2" attributes="0"/>
-              <Component id="btnRandom" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="81" max="-2" attributes="0"/>
+              <Component id="btnNormal" min="-2" pref="100" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
+              <Component id="btnRandom" min="-2" pref="100" max="-2" attributes="0"/>
           </Group>
           <Group type="102" attributes="0">
               <EmptySpace min="182" pref="182" max="-2" attributes="0"/>

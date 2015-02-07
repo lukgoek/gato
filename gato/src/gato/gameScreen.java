@@ -19,7 +19,7 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
     MiBoton botones [][];
     
     String player1="", player2="";
-    int filaBtn, columnaBtn;
+    int filaBtn, columnaBtn, ptsGato;
     boolean ganador=true;
     
     
@@ -88,7 +88,6 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
         });
 
         lWin.setFont(new java.awt.Font("Comic Sans MS", 1, 36)); // NOI18N
-        lWin.setForeground(new java.awt.Color(51, 153, 255));
         lWin.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         lFondo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -212,6 +211,7 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
         if(ganador==true){
       //examina si un jugador a ganado
             String lineaV1, lineaV2, lineaV3, lineaH1, lineaH2, lineaH3, lineaD1, lineaD2;
+            ptsGato=0;
             //recuperar valores
             String btn00 = botones[0][0].tipo;
             String btn01 = botones[0][1].tipo;
@@ -333,6 +333,17 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
         
         }
         
+        for(int i=0; i<botones.length; i++){
+            for(int j=0; j<botones.length; j++){
+                if(!botones[i][j].tipo.equals("")){
+                  ptsGato++; 
+                }
+            }
+        }
+        
+        if(ptsGato==9){
+            lWin.setText("Sorry, the CAT WIN!");
+        }
         
     }
 
