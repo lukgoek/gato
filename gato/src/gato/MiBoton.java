@@ -12,6 +12,6 @@ import javax.swing.JButton;
  * @author fimaz
  */
 public class MiBoton extends JButton {
-    int tipo=0;
+    String tipo="";
     
 }

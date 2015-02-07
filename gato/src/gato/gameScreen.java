@@ -20,7 +20,7 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
     
     String player1="", player2="";
     int filaBtn, columnaBtn;
-    boolean ganador=false;
+    boolean ganador=true;
     
     
     
@@ -62,10 +62,11 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
     private void initComponents() {
 
         pnlBotones = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        lTurno = new javax.swing.JLabel();
         lTurn = new javax.swing.JLabel();
         btnReset = new javax.swing.JButton();
         lWin = new javax.swing.JLabel();
+        lFondo = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         backMenu = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -74,7 +75,10 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
 
         pnlBotones.setLayout(new java.awt.GridLayout(3, 3));
 
-        jLabel1.setText("Turn:");
+        lTurno.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lTurno.setText("Turn:");
+
+        lTurn.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
 
         btnReset.setText("Reset");
         btnReset.addActionListener(new java.awt.event.ActionListener() {
@@ -83,8 +87,12 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
             }
         });
 
-        lWin.setFont(new java.awt.Font("Comic Sans MS", 1, 24)); // NOI18N
+        lWin.setFont(new java.awt.Font("Comic Sans MS", 1, 36)); // NOI18N
+        lWin.setForeground(new java.awt.Color(51, 153, 255));
         lWin.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        lFondo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fondo.png"))); // NOI18N
 
         backMenu.setText("Back <-");
         backMenu.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -104,37 +112,37 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addComponent(lTurn, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(32, 32, 32)
-                        .addComponent(btnReset))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(100, 100, 100)
-                        .addComponent(pnlBotones, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(100, Short.MAX_VALUE))
-            .addComponent(lWin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(34, 34, 34)
+                .addComponent(lTurno)
+                .addGap(18, 18, 18)
+                .addComponent(lTurn, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addComponent(btnReset))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(105, 105, 105)
+                .addComponent(pnlBotones, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addComponent(lWin, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(lFondo, javax.swing.GroupLayout.PREFERRED_SIZE, 610, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
+                .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnReset)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(lTurn, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnReset)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlBotones, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
-                .addComponent(lWin, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27))
+                        .addGap(15, 15, 15)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lTurno)
+                            .addComponent(lTurn, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(6, 6, 6)
+                .addComponent(pnlBotones, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(522, 522, 522)
+                .addComponent(lWin, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(lFondo, javax.swing.GroupLayout.PREFERRED_SIZE, 620, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -189,10 +197,11 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu backMenu;
     private javax.swing.JButton btnReset;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JLabel lFondo;
     public static javax.swing.JLabel lTurn;
+    private javax.swing.JLabel lTurno;
     private javax.swing.JLabel lWin;
     private javax.swing.JPanel pnlBotones;
     // End of variables declaration//GEN-END:variables
@@ -200,24 +209,24 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
     
     public void verificar() {
         
-        
+        if(ganador==true){
       //examina si un jugador a ganado
-            int lineaV1, lineaV2, lineaV3, lineaH1, lineaH2, lineaH3;
+            String lineaV1, lineaV2, lineaV3, lineaH1, lineaH2, lineaH3, lineaD1, lineaD2;
             //recuperar valores
-            int btn00 = botones[0][0].tipo;
-            int btn01 = botones[0][1].tipo;
-            int btn02 = botones[0][2].tipo;
+            String btn00 = botones[0][0].tipo;
+            String btn01 = botones[0][1].tipo;
+            String btn02 = botones[0][2].tipo;
             
-            int btn10 = botones[1][0].tipo;
-            int btn11 = botones[1][1].tipo;
-            int btn12 = botones[1][2].tipo;
+            String btn10 = botones[1][0].tipo;
+            String btn11 = botones[1][1].tipo;
+            String btn12 = botones[1][2].tipo;
             
-            int btn20 = botones[2][0].tipo;
-            int btn21 = botones[2][1].tipo;
-            int btn22 = botones[2][2].tipo;
+            String btn20 = botones[2][0].tipo;
+            String btn21 = botones[2][1].tipo;
+            String btn22 = botones[2][2].tipo;
             
            
-             lineaV1=btn00+btn01+btn02;
+            lineaV1=btn00+btn01+btn02;
             lineaV2=btn10+btn11+btn12;
             lineaV3=btn20+btn21+btn22;
             
@@ -225,88 +234,122 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
             lineaH2=btn01+btn11+btn21;
             lineaH3=btn02+btn12+btn22;
             
-            System.out.println("*"+lineaH1+"*");
+            lineaD1=btn00+btn11+btn22;
+            lineaD2=btn02+btn11+btn20;
+            
+            /*System.out.println("*"+lineaH1+"*");
             System.out.println("*"+lineaH2+"*");
             System.out.println("*"+lineaH3+"*");
+            
+            System.out.println("*"+lineaV1+"*");
+            System.out.println("*"+lineaV2+"*");
+            System.out.println("*"+lineaV3+"*");*/
+            
+            
         //Horizontales!   
-        if(lineaH1.equals("3")){
-            lWin.setText("1 "+player1+" WIN!");
+        if(lineaH1.equals("111")){
+            lWin.setText(""+player1+" WIN!");
             pnlBotones.setEnabled(false);
             ganador=false;
         }
         
-        if(lineaH1.equals("      ")){
-            lWin.setText(" 1"+player2+" WIN!");
+        if(lineaH1.equals("222")){
+            lWin.setText(""+player2+" WIN!");
             ganador=false;
         }
         
-        if(lineaH2.equals("   ")){
-            lWin.setText("2 "+player1+" WIN!");
+        if(lineaH2.equals("111")){
+            lWin.setText(""+player1+" WIN!");
             ganador=false;
         }
         
-        if(lineaH2.equals("      ")){
-            lWin.setText(" 2"+player2+" WIN!");
+        if(lineaH2.equals("222")){
+            lWin.setText(""+player2+" WIN!");
             ganador=false;
         }
-        if(lineaH3.equals("   ")){
-            lWin.setText(" 3"+player1+" WIN!");
+        if(lineaH3.equals("111")){
+            lWin.setText(""+player1+" WIN!");
             ganador=false;
         }
         
-        if(lineaH3.equals("      ")){
-            lWin.setText("3 "+player2+" WIN!");
+        if(lineaH3.equals("222")){
+            lWin.setText(""+player2+" WIN!");
             ganador=false;
         }
         
         
         //Verticales!   
-        if(lineaV1.equals("   ")){
-            lWin.setText(" "+player1+" WIN!");
+        if(lineaV1.equals("111")){
+            lWin.setText(""+player1+" WIN!");
             pnlBotones.setEnabled(false);
             ganador=false;
         }
         
-        if(lineaV1.equals("      ")){
-            lWin.setText(" "+player2+" WIN!");
+        if(lineaV1.equals("222")){
+            lWin.setText(""+player2+" WIN!");
             ganador=false;
         }
         
-        if(lineaV2.equals("   ")){
-            lWin.setText(" "+player1+" WIN!");
+        if(lineaV2.equals("111")){
+            lWin.setText(""+player1+" WIN!");
             ganador=false;
         }
         
-        if(lineaV2.equals("      ")){
-            lWin.setText(" "+player2+" WIN!");
+        if(lineaV2.equals("222")){
+            lWin.setText(""+player2+" WIN!");
             ganador=false;
         }
-        if(lineaV3.equals("   ")){
-            lWin.setText(" "+player1+" WIN!");
-            ganador=false;
-        }
-        
-        if(lineaV3.equals("      ")){
-            lWin.setText(" "+player2+" WIN!");
+        if(lineaV3.equals("111")){
+            lWin.setText(""+player1+" WIN!");
             ganador=false;
         }
         
-     
+        if(lineaV3.equals("222")){
+            lWin.setText(""+player2+" WIN!");
+            ganador=false;
+        }
+        
+        
+        //Diagonales..
+        if(lineaD1.equals("111")){
+            lWin.setText(""+player1+" WIN!");
+            ganador=false;
+        }
+        
+        if(lineaD1.equals("222")){
+            lWin.setText(""+player2+" WIN!");
+            ganador=false;
+        }
+        
+        if(lineaD2.equals("111")){
+            lWin.setText(""+player1+" WIN!");
+            ganador=false;
+        }
+        
+        if(lineaD2.equals("222")){
+            lWin.setText(""+player2+" WIN!");
+            ganador=false;
+        }
+        
+        }
+        
+        
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-       
+       if(ganador==true){
         String contenido, playerTurn = lTurn.getText();
         MiBoton botones = (MiBoton)e.getSource();
-        contenido = botones.getText();
+        contenido = botones.tipo;
         
         for(int i =0; i<this.botones.length; i++){
             for(int j=0; j<this.botones.length; j++){
                 if(botones == this.botones[i][j]){
                     filaBtn=i;
                     columnaBtn=j;
-                    System.out.println(i+"=="+j);
+                    //                    //System.out.println(i+"=="+j);
+System.out.println(i+"=="+j);
                 }
             }
         }
@@ -317,7 +360,7 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
             //System.out.println("aqui"+player1);
             if(contenido.equals("")){
                botones.setIcon(new ImageIcon(getClass().getResource("../images/player1.png")));
-               botones.tipo=1;
+               botones.tipo="1";
                verificar();
                lTurn.setText(player2);
             }
@@ -329,11 +372,13 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
             //System.out.println("aqui"+player2);
             if(contenido.equals("")){
                 botones.setIcon(new ImageIcon(getClass().getResource("../images/player2.png")));
-                botones.tipo=2;
+                botones.tipo="2";
+                verificar();
                 lTurn.setText(player1);
             }
         }
         
+    }
     }
     
 }
