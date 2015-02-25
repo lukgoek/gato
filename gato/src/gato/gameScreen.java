@@ -7,6 +7,14 @@ package gato;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -18,9 +26,25 @@ import javax.swing.JOptionPane;
 public class gameScreen extends javax.swing.JFrame implements ActionListener {
     MiBoton botones [][];
     
-    String player1="", player2="";
+    String nickname="", player1 ="", player2 ="", comando ="", ejecutar ="", client ="1" , turn ="";
+    
     int filaBtn, columnaBtn, ptsGato;
+    
     boolean ganador=true;
+    
+    //Un socket es la combinacion de una dir ip con un puerto.
+    private Socket socket;
+    
+    
+    /*Canales de comunicacion "espacio de memoria entre usuario/servidor.
+      canal entrada, canal salida
+      bits*/
+    private InputStream inputStream;
+    private OutputStream outputStream;
+    
+    //variables primitivas de java
+    private DataInputStream entradaDatos;
+    private DataOutputStream salidaDatos;
     
     
     
@@ -30,6 +54,104 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
         
     }
 
+    
+/**********************************************************************************/    
+    public void conexion(int puerto, String host, String nickname){
+        /* host=ip puerto=puerto al que se conectara  */
+        try {
+            socket = new Socket(host, puerto);
+            this.nickname = nickname;
+            //lbNick.setText(this.nickname);
+            comando = "turn";
+            ejecutar = client;
+            enviaDatos();
+            
+            startThread();
+        } catch (IOException ex) {
+            Logger.getLogger(gameScreen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }
+    
+    
+/**********************************************************************************/ 
+   
+    public void startThread(){
+        System.out.println(inputStream);
+        
+        Thread hiloServer = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true){
+                    recibeDatos();
+                    
+                    
+                }
+                
+            }
+        });
+        hiloServer.start();   
+    }
+    
+    
+/**********************************************************************************/   
+    
+    public void recibeDatos(){
+        
+        try {
+            inputStream = socket.getInputStream();
+            entradaDatos = new DataInputStream(inputStream);
+            //System.out.println("RECIBEDATOS INTERFACE"+entradaDatos.readUTF());
+            
+            onClick(entradaDatos.readUTF());
+            
+            String comandos [] = entradaDatos.readUTF().split("/");
+            
+            if(comandos[0].equals("turn")){
+                turn = comandos[1];    
+            }
+            
+            
+            
+        } catch (IOException ex) {
+            Logger.getLogger(gameScreen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }
+    
+/**********************************************************************************/  
+    
+    public void enviaDatos(){
+        
+        try {
+            outputStream = socket.getOutputStream();
+            salidaDatos = new DataOutputStream(outputStream);
+            
+            salidaDatos.writeUTF(comando+"/"+ejecutar);
+            salidaDatos.flush();
+             System.out.println("Se envio esto: "+comando+"/"+ejecutar);
+            
+        } catch (IOException ex) {
+            Logger.getLogger(gameScreen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }
+    
+    
+/**********************************************************************************/
+    
+    
+    public void onClick(String msg){
+        
+        //ALGO
+        
+    }
+    
+    
+ /**********************************************************************************/
     
     public void llenarPanel(){
         botones = new MiBoton[3][3];
@@ -246,7 +368,7 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
             System.out.println("*"+lineaV3+"*");*/
             
             
-        //Horizontales!   
+      /*  //Horizontales!   
         if(lineaH1.equals("111")){
             lWin.setText(""+player1+" WIN!");
             pnlBotones.setEnabled(false);
@@ -329,7 +451,7 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
         if(lineaD2.equals("222")){
             lWin.setText(""+player2+" WIN!");
             ganador=false;
-        }
+        }*/
         
         }
         
@@ -349,7 +471,8 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-       if(ganador==true){
+        comando = "click";
+        if(ganador==true){
         String contenido, playerTurn = lTurn.getText();
         MiBoton botones = (MiBoton)e.getSource();
         contenido = botones.tipo;
@@ -360,14 +483,19 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
                     filaBtn=i;
                     columnaBtn=j;
                     //                    //System.out.println(i+"=="+j);
-System.out.println(i+"=="+j);
+                    System.out.println(i+"=="+j);
                 }
             }
         }
         
+        if(filaBtn == 0 && columnaBtn == 0){
+            ejecutar = "1";
+        }
         
+        enviaDatos();
+      /*  
         //verifica si es player1
-        if(playerTurn.equals(player1)){
+        if(playerTurn.equals(this.nickname)){
             //System.out.println("aqui"+player1);
             if(contenido.equals("")){
                botones.setIcon(new ImageIcon(getClass().getResource("../images/player1.png")));
@@ -387,7 +515,7 @@ System.out.println(i+"=="+j);
                 verificar();
                 lTurn.setText(player1);
             }
-        }
+        }*/
         
     }
     }
