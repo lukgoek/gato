@@ -26,11 +26,12 @@ import javax.swing.JOptionPane;
 public class gameScreen extends javax.swing.JFrame implements ActionListener {
     MiBoton botones [][];
     
-    String nickname="", player1 ="", player2 ="", comando ="", ejecutar ="", client ="1" , turn ="";
+    String nickname="", player1 ="", player2 ="", comando ="", ejecutar ="", client ="1";
+    
     
     int filaBtn, columnaBtn, ptsGato;
     
-    boolean ganador=true;
+    boolean ganador=true, turn=false;
     
     //Un socket es la combinacion de una dir ip con un puerto.
     private Socket socket;
@@ -62,8 +63,8 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
             socket = new Socket(host, puerto);
             this.nickname = nickname;
             //lbNick.setText(this.nickname);
-            comando = "turn";
-            ejecutar = client;
+            comando = "nick";
+            ejecutar = nickname;
             enviaDatos();
             
             startThread();
@@ -104,13 +105,29 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
             entradaDatos = new DataInputStream(inputStream);
             //System.out.println("RECIBEDATOS INTERFACE"+entradaDatos.readUTF());
             
-            onClick(entradaDatos.readUTF());
+            
             
             String comandos [] = entradaDatos.readUTF().split("/");
             
-            if(comandos[0].equals("turn")){
-                turn = comandos[1];    
+            
+            //Coloca los nombres de los jugadores
+            if(comandos[0].equals("player1")){
+                
+                player1=comandos[1];
+                System.out.println("palyer1 ="+player1);
             }
+            
+            if(comandos[0].equals("player2")){
+                
+                player2=comandos[1];
+                System.out.println("player2 ="+player2);
+            }
+            
+            /*
+            if(comandos[0].equals(this.nickname)){
+                turn=true;
+            }
+            */
             
             
             
@@ -131,7 +148,7 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
             
             salidaDatos.writeUTF(comando+"/"+ejecutar);
             salidaDatos.flush();
-             System.out.println("Se envio esto: "+comando+"/"+ejecutar);
+             System.out.println("Se envio esto: "+nickname+"/"+comando+"/"+ejecutar);
             
         } catch (IOException ex) {
             Logger.getLogger(gameScreen.class.getName()).log(Level.SEVERE, null, ex);
@@ -144,9 +161,9 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
 /**********************************************************************************/
     
     
-    public void onClick(String msg){
+    public void getTurn(boolean turn){
+        this.turn=turn;
         
-        //ALGO
         
     }
     
@@ -471,7 +488,9 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        
         comando = "click";
+        
         if(ganador==true){
         String contenido, playerTurn = lTurn.getText();
         MiBoton botones = (MiBoton)e.getSource();
@@ -493,7 +512,7 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
         }
         
         enviaDatos();
-      /*  
+        
         //verifica si es player1
         if(playerTurn.equals(this.nickname)){
             //System.out.println("aqui"+player1);
@@ -515,7 +534,7 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
                 verificar();
                 lTurn.setText(player1);
             }
-        }*/
+        }
         
     }
     }
