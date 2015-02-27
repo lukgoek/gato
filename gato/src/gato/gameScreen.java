@@ -31,7 +31,7 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
     
     int filaBtn, columnaBtn, ptsGato;
     
-    boolean ganador=true, turn=false;
+    boolean ganador=true, turn=false, clickExterno=false;
     
     //Un socket es la combinacion de una dir ip con un puerto.
     private Socket socket;
@@ -114,7 +114,9 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
             if(comandos[0].equals("player1")){
                 
                 player1=comandos[1];
+                lTurn.setText(player1);
                 System.out.println("palyer1 ="+player1);
+                
             }
             
             if(comandos.length == 2){
@@ -125,11 +127,16 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
             }
             }
             
-            /*
-            if(comandos[0].equals(this.nickname)){
-                turn=true;
+            
+            if(comandos[0].equals("click")){
+                System.out.println("Estoy recibiendo un click!");
+                actionClick(comandos[1]);
             }
-            */
+            
+            if(comandos[0].equals("reset")){
+                resetThisGame();
+            }
+            
             
             
             
@@ -148,9 +155,9 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
             outputStream = socket.getOutputStream();
             salidaDatos = new DataOutputStream(outputStream);
             
-            salidaDatos.writeUTF(comando+"/"+ejecutar);
+            salidaDatos.writeUTF(this.nickname+"/"+comando+"/"+ejecutar);
             salidaDatos.flush();
-             System.out.println("Se envio esto: "+nickname+"/"+comando+"/"+ejecutar);
+             System.out.println("Se envio esto: "+this.nickname+"/"+comando+"/"+ejecutar);
             
         } catch (IOException ex) {
             Logger.getLogger(gameScreen.class.getName()).log(Level.SEVERE, null, ex);
@@ -190,7 +197,67 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
         
     }
     
+/**********************************************************************************/
     
+    public void actionClick(String posicion){
+        System.out.println("Hagamos click en : "+posicion);
+        
+        if(posicion.equals("1")){
+            clickExterno = true;
+            this.botones[0][0].doClick();
+        }
+        
+        if(posicion.equals("2")){
+            clickExterno = true;
+            this.botones[0][1].doClick();
+        }
+        if(posicion.equals("3")){
+            clickExterno = true;
+            this.botones[0][2].doClick();
+        }
+        
+        if(posicion.equals("4")){
+            clickExterno = true;
+            this.botones[1][0].doClick();
+        }
+        
+        if(posicion.equals("5")){
+            clickExterno = true;
+            this.botones[1][1].doClick();
+        }
+        
+        if(posicion.equals("6")){
+            clickExterno = true;
+            this.botones[1][2].doClick();
+        }
+        
+        if(posicion.equals("7")){
+            clickExterno = true;
+            this.botones[2][0].doClick();
+        }
+        
+        if(posicion.equals("8")){
+            clickExterno = true;
+            this.botones[2][1].doClick();
+        }
+        
+        if(posicion.equals("9")){
+            clickExterno = true;
+            this.botones[2][2].doClick();
+        }
+        
+    }
+    
+    public void resetThisGame(){
+        JOptionPane.showMessageDialog(null,"Reset game... The progress will be lost.");
+  
+            lWin.setText("");
+            lWin.repaint();
+            pnlBotones.removeAll();
+            llenarPanel();
+            ganador=true;
+        
+    }
     
     
     /**
@@ -289,18 +356,12 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
-        int reset = JOptionPane.showConfirmDialog(null,"Are you sure?.\nThe progress will be lost.","¿Do you want to reset the game?", JOptionPane.YES_NO_OPTION);
-    
-            if(reset==0){
-            lWin.setText("");
-            lWin.repaint();
-            pnlBotones.removeAll();
-            llenarPanel();
-            ganador=true;
-            }else{
-                
-                //No hacemos nada continuamos :D
-            } 
+      
+        comando ="reset";
+        ejecutar ="reset";
+        enviaDatos();
+        
+           
         
     }//GEN-LAST:event_btnResetActionPerformed
 
@@ -487,6 +548,8 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
         }
         
     }
+    
+    
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -495,6 +558,9 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
         
         if(ganador==true){
         String contenido, playerTurn = lTurn.getText();
+        
+        if(playerTurn.equals(this.nickname)  || clickExterno == true){
+        
         MiBoton botones = (MiBoton)e.getSource();
         contenido = botones.tipo;
         
@@ -531,17 +597,17 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
         }
         
         if(filaBtn == 2 && columnaBtn == 0){
-            ejecutar = "1";
+            ejecutar = "7";
         }
         if(filaBtn == 2 && columnaBtn == 1){
-            ejecutar = "2";
+            ejecutar = "8";
         }
         if(filaBtn == 2 && columnaBtn == 2){
-            ejecutar = "3";
+            ejecutar = "9";
         }
         
         //enviaDatos();
-        
+ //       if(this.nickname.equals(playerTurn)){
         //verifica si es player1
         if(playerTurn.equals(player1)){
             //System.out.println("aqui"+player1);
@@ -551,6 +617,7 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
                enviaDatos();
                verificar();
                lTurn.setText(player2);
+               clickExterno=false;
             }
         }
         
@@ -561,12 +628,15 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
             if(contenido.equals("")){
                 botones.setIcon(new ImageIcon(getClass().getResource("../images/player2.png")));
                 botones.tipo="2";
+                enviaDatos();
                 verificar();
                 lTurn.setText(player1);
+                clickExterno=false;
             }
         }
         
+      }
     }
-    }
+   }
     
 }

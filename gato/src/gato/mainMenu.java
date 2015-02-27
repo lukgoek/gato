@@ -125,6 +125,7 @@ public class mainMenu extends javax.swing.JFrame {
     private void btnNormalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNormalActionPerformed
         gameScreen obj = new gameScreen();
         String dirIp = "127.0.0.1";
+        
         obj.nickname = txtPlayer1.getText();
         obj.conexion(5555, dirIp, txtPlayer1.getText());
         
