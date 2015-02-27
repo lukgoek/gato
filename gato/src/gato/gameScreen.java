@@ -117,10 +117,12 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
                 System.out.println("palyer1 ="+player1);
             }
             
+            if(comandos.length == 2){
             if(comandos[0].equals("player2")){
                 
                 player2=comandos[1];
                 System.out.println("player2 ="+player2);
+            }
             }
             
             /*
@@ -385,7 +387,7 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
             System.out.println("*"+lineaV3+"*");*/
             
             
-      /*  //Horizontales!   
+        //Horizontales!   
         if(lineaH1.equals("111")){
             lWin.setText(""+player1+" WIN!");
             pnlBotones.setEnabled(false);
@@ -468,7 +470,7 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
         if(lineaD2.equals("222")){
             lWin.setText(""+player2+" WIN!");
             ganador=false;
-        }*/
+        }
         
         }
         
@@ -510,15 +512,43 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
         if(filaBtn == 0 && columnaBtn == 0){
             ejecutar = "1";
         }
+        if(filaBtn == 0 && columnaBtn == 1){
+            ejecutar = "2";
+        }
+        if(filaBtn == 0 && columnaBtn == 2){
+            ejecutar = "3";
+        }
         
-        enviaDatos();
+        
+        if(filaBtn == 1 && columnaBtn == 0){
+            ejecutar = "4";
+        }
+        if(filaBtn == 1 && columnaBtn == 1){
+            ejecutar = "5";
+        }
+        if(filaBtn == 1 && columnaBtn == 2){
+            ejecutar = "6";
+        }
+        
+        if(filaBtn == 2 && columnaBtn == 0){
+            ejecutar = "1";
+        }
+        if(filaBtn == 2 && columnaBtn == 1){
+            ejecutar = "2";
+        }
+        if(filaBtn == 2 && columnaBtn == 2){
+            ejecutar = "3";
+        }
+        
+        //enviaDatos();
         
         //verifica si es player1
-        if(playerTurn.equals(this.nickname)){
+        if(playerTurn.equals(player1)){
             //System.out.println("aqui"+player1);
             if(contenido.equals("")){
                botones.setIcon(new ImageIcon(getClass().getResource("../images/player1.png")));
                botones.tipo="1";
+               enviaDatos();
                verificar();
                lTurn.setText(player2);
             }
