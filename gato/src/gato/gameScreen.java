@@ -130,7 +130,9 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
             
             if(comandos[0].equals("click")){
                 System.out.println("Estoy recibiendo un click!");
+                
                 actionClick(comandos[1]);
+                
             }
             
             if(comandos[0].equals("reset")){
@@ -256,6 +258,7 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
             pnlBotones.removeAll();
             llenarPanel();
             ganador=true;
+            clickExterno = false;
         
     }
     
@@ -560,6 +563,7 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
         String contenido, playerTurn = lTurn.getText();
         
         if(playerTurn.equals(this.nickname)  || clickExterno == true){
+            clickExterno=false;
         
         MiBoton botones = (MiBoton)e.getSource();
         contenido = botones.tipo;
@@ -609,15 +613,19 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
         //enviaDatos();
  //       if(this.nickname.equals(playerTurn)){
         //verifica si es player1
+        
+        
         if(playerTurn.equals(player1)){
             //System.out.println("aqui"+player1);
+             
             if(contenido.equals("")){
+               
                botones.setIcon(new ImageIcon(getClass().getResource("../images/player1.png")));
                botones.tipo="1";
                enviaDatos();
                verificar();
                lTurn.setText(player2);
-               clickExterno=false;
+               
             }
         }
         
@@ -631,7 +639,6 @@ public class gameScreen extends javax.swing.JFrame implements ActionListener {
                 enviaDatos();
                 verificar();
                 lTurn.setText(player1);
-                clickExterno=false;
             }
         }
         
